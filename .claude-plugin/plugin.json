@@ -1,0 +1,12 @@
+{
+  "name": "doge-code",
+  "displayName": "Doge Code",
+  "description": "much doge. very Claude Code. wow. Bundles a doge statusline, a doge output-style, and a doge Stop hook.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Aaron"
+  },
+  "keywords": ["doge", "fun", "statusline", "output-style", "hook"],
+  "outputStyles": "./output-styles/",
+  "hooks": "./hooks/hooks.json"
+}
