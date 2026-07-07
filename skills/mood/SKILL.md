@@ -1,6 +1,6 @@
 ---
 name: mood
-description: Switch the session's personality mood (doge, caveman, pirate, shakespeare) or get an in-character session recap. Use when the user types /mood, /mood <name>, or asks to change/switch the vibe, personality, or theme, or asks for an in-character session summary/recap.
+description: Switch the session's personality mood (doge, caveman, pirate, shakespeare) or get an in-character session recap. Use when the user types /mood, /mood <name>, or asks to change/switch the vibe, personality, or theme, or asks for an in-character session summary/recap. With no mood named, shows a selectable picker of the available moods.
 ---
 
 # /mood — one switch. every surface. in character.
@@ -13,9 +13,26 @@ Available moods live in `${CLAUDE_PLUGIN_ROOT}/themes/` — each is a folder wit
 `theme.json`, `art.txt`, and `one-liners.txt`. Read that directory to discover them;
 do not hardcode the list. As shipped: **doge, caveman, pirate, shakespeare**.
 
-## Mode A — `/mood <name>` (switch)
+## Routing — decide which mode
 
-When the user names a mood (e.g. `/mood caveman`):
+- Invoked **with a mood name** (`/mood caveman`) → **Mode A** (switch directly).
+- Invoked **with no argument** (`/mood`) → **show the picker** (below), then act on the choice.
+- Invoked with a word like "recap", "summary", or "how'd we do" → **Mode B** (recap).
+
+### The picker (no-argument invocation)
+
+Do NOT default to a recap when no mood is named. Instead, call the `AskUserQuestion` tool
+so the user gets a selectable options list. Build the options dynamically by listing the
+folders in `${CLAUDE_PLUGIN_ROOT}/themes/` — one option per theme (label = the theme's
+`display` from its `theme.json`, description = a short sample of its voice), PLUS a final
+option **"Recap this session"**. One question, single-select, header `Mood`.
+
+- If the user picks a mood → do **Mode A** for that mood.
+- If the user picks "Recap this session" → do **Mode B** for the currently active mood.
+
+## Mode A — switch to a named mood
+
+When a mood is chosen (via argument or the picker):
 
 1. Verify `${CLAUDE_PLUGIN_ROOT}/themes/<name>/` exists. If not, list the available
    theme folders and stop.
@@ -31,7 +48,7 @@ When the user names a mood (e.g. `/mood caveman`):
    render; only the prose needs that one manual command.
 4. Confirm in one line, already speaking in the new mood's voice.
 
-## Mode B — `/mood` alone, or `/mood <name>` recap request (summary)
+## Mode B — recap (picker "Recap" choice, or an explicit recap request)
 
 Produce an in-character session recap. Two parts, in order:
 
