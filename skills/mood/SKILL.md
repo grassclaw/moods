@@ -53,12 +53,21 @@ When a mood is chosen (via argument or the picker):
    ```bash
    printf '%s' "<name>" > ~/.claude/moods-active
    ```
-3. Switch the prose style to match. Read `outputStyle` from
-   `${CLAUDE_PLUGIN_ROOT}/themes/<name>/theme.json` and tell the user to run
-   `/output-style <that value>` (the harness can't change output style programmatically —
-   it's a user action). The statusline and Stop-hook flip **immediately** on the next
-   render; only the prose needs that one manual command.
-4. Confirm in one line, already speaking in the new mood's voice.
+3. Switch the prose style to match by writing the `outputStyle` key into the user's
+   settings — do NOT tell the user to run `/output-style` (that command was removed from
+   Claude Code; it no longer exists). Read `outputStyle` from
+   `${CLAUDE_PLUGIN_ROOT}/themes/<name>/theme.json` (e.g. `Doge`), then merge it into
+   `~/.claude/settings.json` **without clobbering** other keys — parse the JSON, set the
+   one key, write it back. If the file doesn't exist, create it as `{ "outputStyle": "<value>" }`.
+   ```bash
+   f="$HOME/.claude/settings.json"
+   [ -f "$f" ] || echo '{}' > "$f"
+   tmp=$(jq --arg v "<OutputStyleValue>" '.outputStyle = $v' "$f") && printf '%s\n' "$tmp" > "$f"
+   ```
+4. Tell the user the statusline and Stop-hook flipped **immediately**, but the prose style
+   only takes effect after a **`/clear` or a new session** (Claude Code reads the output
+   style once at session start). So: `/clear` to get the new voice now.
+5. Confirm in one line, already speaking in the new mood's voice.
 
 ## Mode B — recap (picker "Recap" choice, or an explicit recap request)
 

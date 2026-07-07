@@ -26,18 +26,19 @@ character. Ships with four moods; adding your own is dropping a folder.
 ## Install (local / dev)
 
 ```bash
-# one-off, this session only:
-claude --plugin-dir ~/Development/doge-code
+# one-off, this session only (use wherever you cloned it):
+claude --plugin-dir ~/Development/moods
 
 # then inside Claude Code:
-/mood pirate                # switch mood (persists across sessions)
-/output-style Pirate        # apply the matching prose style (one manual step)
+/mood                       # picker of available moods (or a session recap)
+/mood pirate                # switch mood directly (persists across sessions)
 /moods:setup-statusline     # wire the statusline into your settings
-/mood                       # ASCII art + in-character session recap
 ```
 
-The Stop hook activates automatically once the plugin is loaded. The statusline and hook
-follow the active mood immediately; only the prose needs the one `/output-style` command.
+The Stop hook activates automatically once the plugin is loaded. Switching a mood flips
+the statusline and hook **immediately**, and writes the matching `outputStyle` into
+`~/.claude/settings.json` for you — but the **prose** style only takes effect after a
+`/clear` or a new session (Claude Code reads the output style once at startup).
 
 ### Persistent install
 
