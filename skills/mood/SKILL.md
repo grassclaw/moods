@@ -19,6 +19,10 @@ do not hardcode the list. As shipped: **doge, caveman, pirate, shakespeare**.
 - Invoked **with no argument** (`/mood`) → **show the picker** (below), then act on the choice.
 - Invoked with a word like "recap", "summary", or "how'd we do" → **Mode B** (recap).
 
+> For a recap, prefer the dedicated **`/recap`** skill (`skills/recap`) — it prints the
+> active mood's art + recap directly, no picker. Mode B here is the same behavior, kept so
+> a recap request routed to `/mood` still works.
+
 ### The picker (no-argument invocation)
 
 Do NOT default to a recap when no mood is named. Call the `AskUserQuestion` tool

@@ -18,10 +18,11 @@ character. Ships with four moods; adding your own is dropping a folder.
 | Component | What it does |
 |-----------|--------------|
 | **`/mood <name>`** | The switch. Persists the active mood and flips everything to it. |
+| **`/mood`** (no arg) | Instant picker of the available moods. |
+| **`/recap`** | ASCII art + an honest, in-character recap of the session, in the *active* mood's voice. No mood switch needed. |
 | **Statusline** | `🐕 such Opus · wow 8% ctx · very high · much $0.01` — real session info wrapped in the active mood's words + palette. |
 | **Output styles** | One per mood. Makes Claude's *prose* talk in character while keeping all code, paths, and commands 100% literal and correct. |
 | **Stop hook** | Drops a random in-character one-liner each time a turn finishes. |
-| **`/mood`** (no arg) | Prints the mood's ASCII art + an honest, in-character recap of the session. |
 
 ## Install (local / dev)
 
@@ -30,8 +31,9 @@ character. Ships with four moods; adding your own is dropping a folder.
 claude --plugin-dir ~/Development/moods
 
 # then inside Claude Code:
-/mood                       # picker of available moods (or a session recap)
+/mood                       # instant picker of the available moods
 /mood pirate                # switch mood directly (persists across sessions)
+/recap                      # session recap in the active mood's voice + art
 /moods:setup-statusline     # wire the statusline into your settings
 ```
 
@@ -89,7 +91,8 @@ moods/
 │   ├── statusline.sh            # renders the status line
 │   └── stop.sh                  # emits the after-turn one-liner
 └── skills/
-    ├── mood/                    # /mood switch + recap
+    ├── mood/                    # /mood — switch (or picker)
+    ├── recap/                   # /recap — in-character session recap
     └── setup-statusline/        # installs the statusline into user settings
 ```
 
