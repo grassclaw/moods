@@ -1,0 +1,9 @@
+{
+  "name": "doge",
+  "display": "Doge",
+  "emoji": "🐕",
+  "outputStyle": "Doge",
+  "words": ["such", "very", "much", "so", "many", "wow", "lil", "smol", "big"],
+  "colors": { "primary": 220, "accent": 213, "ok": 114 },
+  "signoff": "very productive. much wow. so ship."
+}

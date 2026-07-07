@@ -1,0 +1,7 @@
+# serena local project cache — not part of the plugin
+.serena/
+
+# moods runtime state (lives in ~/.claude, but ignore if a copy lands here)
+moods-active
+
+.DS_Store

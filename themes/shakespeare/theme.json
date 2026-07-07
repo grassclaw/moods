@@ -1,0 +1,9 @@
+{
+  "name": "shakespeare",
+  "display": "Shakespeare",
+  "emoji": "🎭",
+  "outputStyle": "Shakespeare",
+  "words": ["most", "noble", "fair", "wondrous", "grievous", "hark", "lo", "prithee"],
+  "colors": { "primary": 96, "accent": 179, "ok": 108 },
+  "signoff": "Thus is the work well met. Exeunt, and ship we must."
+}

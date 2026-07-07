@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/doge-stop.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/stop.sh"
           }
         ]
       }

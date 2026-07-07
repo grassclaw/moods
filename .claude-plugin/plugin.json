@@ -1,12 +1,12 @@
 {
-  "name": "doge-code",
-  "displayName": "Doge Code",
-  "description": "much doge. very Claude Code. wow. Bundles a doge statusline, a doge output-style, and a doge Stop hook.",
-  "version": "1.0.0",
+  "name": "moods",
+  "displayName": "Moods",
+  "description": "Give your Claude Code session a personality. One /mood switch drives prose, statusline, and the Stop-hook one-liner together. Ships with doge, caveman, pirate, and shakespeare — add your own by dropping a theme folder.",
+  "version": "2.0.0",
   "author": {
-    "name": "Aaron"
+    "name": "grassclaw"
   },
-  "keywords": ["doge", "fun", "statusline", "output-style", "hook"],
+  "keywords": ["mood", "theme", "personality", "fun", "statusline", "output-style", "hook", "doge", "caveman", "pirate", "shakespeare"],
   "outputStyles": "./output-styles/",
   "hooks": "./hooks/hooks.json"
 }

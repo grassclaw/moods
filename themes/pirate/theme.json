@@ -1,0 +1,9 @@
+{
+  "name": "pirate",
+  "display": "Pirate",
+  "emoji": "🏴‍☠️",
+  "outputStyle": "Pirate",
+  "words": ["arr", "aye", "ye", "scurvy", "salty", "briny", "hearty", "bonny"],
+  "colors": { "primary": 179, "accent": 24, "ok": 108 },
+  "signoff": "Fair winds, all hands. Ship it, ye landlubbers. Arr."
+}

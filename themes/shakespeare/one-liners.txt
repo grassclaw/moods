@@ -1,0 +1,8 @@
+Lo, the task is done; let the bells ring out.
+Hark! The tests do pass, all green as summer's field.
+The deed is wrought. Ship it, and be merry.
+Thus falls the bug, undone by mine own hand.
+The answer given, prithee take it well.
+Many a keystroke spent in noble toil.
+'Tis finished. What's done cannot be undone.
+Fair work, well met. Exeunt, pursued by a deploy.

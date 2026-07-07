@@ -1,20 +1,27 @@
-# 🐕 doge-code
+# 🎭 moods
 
-> much plugin. very Claude Code. wow.
+> Give your Claude Code session a personality. `/mood caveman` and everything speaks caveman.
 
-A joke-but-functional Claude Code plugin that doge-ifies your session. Bundles three things:
+A joke-but-functional Claude Code plugin. Pick a **mood** and a single switch drives three
+surfaces at once — the prose, the statusline, and the after-turn one-liner — all in
+character. Ships with four moods; adding your own is dropping a folder.
+
+| Mood | Voice |
+|------|-------|
+| 🐕 **doge** | such fix. very green. wow. |
+| 🪨 **caveman** | ME FIX BUG. BUG DEAD. FIRE GOOD. |
+| 🏴‍☠️ **pirate** | Arr, the scurvy null check be run to ground, matey. |
+| 🎭 **shakespeare** | Lo, the null check is mended; the suite doth pass. |
+
+## What it drives
 
 | Component | What it does |
 |-----------|--------------|
-| **Statusline** | `🐕 such Opus · wow 8% ctx · very high · much $0.01` — real session info wrapped in cycling doge intensifiers, with doge-gold/shibe-magenta coloring that shifts as context fills. |
-| **Output style** (`Doge`) | Makes Claude's *prose* talk doge ("such fix. very green. wow.") while keeping all code, paths, and commands 100% literal and correct. |
-| **Stop hook** | Drops a random doge one-liner ("wow. very done. much answer.") each time a turn finishes. |
-
-## Why not the spinner words?
-
-The original idea was to doge-ify the *thinking words* (the "Cogitating…" spinner verbs).
-Those are **hardcoded** in Claude Code — no setting, env var, or hook exposes them. much sad.
-So doge-code hits everything that *is* customizable instead.
+| **`/mood <name>`** | The switch. Persists the active mood and flips everything to it. |
+| **Statusline** | `🐕 such Opus · wow 8% ctx · very high · much $0.01` — real session info wrapped in the active mood's words + palette. |
+| **Output styles** | One per mood. Makes Claude's *prose* talk in character while keeping all code, paths, and commands 100% literal and correct. |
+| **Stop hook** | Drops a random in-character one-liner each time a turn finishes. |
+| **`/mood`** (no arg) | Prints the mood's ASCII art + an honest, in-character recap of the session. |
 
 ## Install (local / dev)
 
@@ -23,32 +30,66 @@ So doge-code hits everything that *is* customizable instead.
 claude --plugin-dir ~/Development/doge-code
 
 # then inside Claude Code:
-/output-style Doge            # turn on doge prose
-/doge-code:setup-statusline   # wire the statusline into your settings
+/mood pirate                # switch mood (persists across sessions)
+/output-style Pirate        # apply the matching prose style (one manual step)
+/moods:setup-statusline     # wire the statusline into your settings
+/mood                       # ASCII art + in-character session recap
 ```
 
-The Stop hook activates automatically once the plugin is loaded.
+The Stop hook activates automatically once the plugin is loaded. The statusline and hook
+follow the active mood immediately; only the prose needs the one `/output-style` command.
 
 ### Persistent install
 
-Point a marketplace at this repo (git-hosted; no `file://` marketplaces supported), or copy
-the dir under `~/.claude/skills/` to auto-load it every session.
+Point a marketplace at this repo (git-hosted; no `file://` marketplaces supported), or
+copy the dir under `~/.claude/skills/` to auto-load it every session.
+
+## Add your own mood
+
+No code changes. Drop a folder under `themes/<name>/` with three files:
+
+```
+themes/<name>/
+├── theme.json      # emoji, outputStyle name, words[], colors{primary,accent,ok}, signoff
+├── art.txt         # ASCII art for /mood recap
+└── one-liners.txt  # one per line; Stop hook picks at random
+```
+
+Then add a matching `output-styles/<OutputStyle>.md` for the prose voice, and `/mood <name>`
+just works. See `themes/doge/` as the reference.
+
+## How it works
+
+`~/.claude/moods-active` holds the active mood name — the single source of truth. `/mood`
+writes it; the statusline and Stop-hook scripts (`scripts/statusline.sh`, `scripts/stop.sh`,
+via `scripts/lib.sh`) read it and render the matching theme pack. Defaults to `doge` if
+unset or missing.
+
+## Why not the spinner words?
+
+The original idea was to theme the *thinking words* (the "Cogitating…" spinner verbs).
+Those are **hardcoded** in Claude Code — no setting, env var, or hook exposes them. So
+`moods` hits everything that *is* customizable instead.
 
 ## Requirements
 
-- `jq` on PATH (statusline dependency).
+- `jq` on PATH (statusline + theme reading depend on it).
 
 ## Structure
 
 ```
-doge-code/
-├── .claude-plugin/plugin.json     # manifest
-├── output-styles/doge.md          # the "Doge" output style
-├── hooks/hooks.json               # Stop hook wiring
+moods/
+├── .claude-plugin/plugin.json   # manifest
+├── themes/<name>/               # theme packs (theme.json, art.txt, one-liners.txt)
+├── output-styles/*.md           # one prose style per mood
+├── hooks/hooks.json             # Stop hook wiring
 ├── scripts/
-│   ├── doge-statusline.sh         # renders the status line
-│   └── doge-stop.sh               # emits the doge one-liner
-└── skills/setup-statusline/       # installs the statusline into user settings
+│   ├── lib.sh                   # resolves the active mood + theme fields
+│   ├── statusline.sh            # renders the status line
+│   └── stop.sh                  # emits the after-turn one-liner
+└── skills/
+    ├── mood/                    # /mood switch + recap
+    └── setup-statusline/        # installs the statusline into user settings
 ```
 
-wow. such plugin. very done.
+much plugin. very personality. wow.

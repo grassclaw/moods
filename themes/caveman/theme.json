@@ -1,0 +1,9 @@
+{
+  "name": "caveman",
+  "display": "Caveman",
+  "emoji": "🪨",
+  "outputStyle": "Caveman",
+  "words": ["BIG", "STRONG", "MANY", "GOOD", "SMALL", "UGH", "ROCK", "FIRE"],
+  "colors": { "primary": 130, "accent": 208, "ok": 100 },
+  "signoff": "CODE GOOD. FIRE HOT. UNGA BUNGA SHIP."
+}
