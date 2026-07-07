@@ -21,26 +21,30 @@ do not hardcode the list. As shipped: **doge, caveman, pirate, shakespeare**.
 
 ### The picker (no-argument invocation)
 
-Do NOT default to a recap when no mood is named. Instead, call the `AskUserQuestion` tool
-so the user gets a selectable options list, single-select, header `Mood`.
+Do NOT default to a recap when no mood is named. Call the `AskUserQuestion` tool
+**directly** — single-select, header `Mood` — with the options listed below. Do NOT run
+any shell commands or read any files to build it; the options are baked in here so the
+picker is instant. Question text: "Which mood? (or choose Other and type a mood name, or
+`recap`.)"
 
-Build the options dynamically by listing the folders in `${CLAUDE_PLUGIN_ROOT}/themes/` —
-one option per theme (label = the theme's `display` from its `theme.json`, description = a
-short sample of its voice).
+Options (label · description):
+- **Doge** — such code. very ship. much wow. so productive.
+- **Caveman** — CODE GOOD. FIRE HOT. Short blunt all-caps grunts. UNGA BUNGA SHIP.
+- **Pirate** — Arr, ye scurvy code! Hearty commits, briny bugfixes. Ship it, landlubbers.
+- **Shakespeare** — Hark! Most noble code, fair and wondrous. Prithee, ship we must.
 
-**Hard constraint: `AskUserQuestion` allows at most 4 options.** Handle it like this:
-- **≤4 themes** → show one option per theme. Do NOT add a separate "Recap" option — recap
-  is reachable by typing `recap` in the tool's built-in "Other" field, so don't spend a
-  slot on it (adding a 5th option is an invalid-parameters error).
-- **>4 themes** → show the 4 whose folders sort first alphabetically, and note in the
-  question text that more exist and can be named directly (e.g. `/mood <name>`).
-
-Put a hint in the question text: "…or choose Other and type a mood name, or `recap`."
+**Constraint: `AskUserQuestion` allows at most 4 options** — that's exactly the 4 above,
+so there's no room for a dedicated "Recap" option. Recap is reachable via the tool's
+built-in "Other" field (type `recap`). If more than 4 themes ever ship, list only 4 here
+and note in the question text that others can be named directly (`/mood <name>`).
 
 After the user answers:
-- Picked a theme option, or typed a valid mood name in Other → do **Mode A** for it.
+- Picked a mood, or typed a valid mood name in Other → do **Mode A** for it.
 - Typed `recap` (or similar) in Other → do **Mode B** for the currently active mood.
-- Typed an unknown word → list the available themes and stop.
+- Typed an unknown word → list the available themes (`${CLAUDE_PLUGIN_ROOT}/themes/`) and stop.
+
+> Keeping the list above in sync: when you add a theme folder, add one bullet here too.
+> This is the ONE place the picker is hardcoded — everything else stays dynamic.
 
 ## Mode A — switch to a named mood
 
