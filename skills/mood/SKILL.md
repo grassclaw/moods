@@ -22,13 +22,25 @@ do not hardcode the list. As shipped: **doge, caveman, pirate, shakespeare**.
 ### The picker (no-argument invocation)
 
 Do NOT default to a recap when no mood is named. Instead, call the `AskUserQuestion` tool
-so the user gets a selectable options list. Build the options dynamically by listing the
-folders in `${CLAUDE_PLUGIN_ROOT}/themes/` — one option per theme (label = the theme's
-`display` from its `theme.json`, description = a short sample of its voice), PLUS a final
-option **"Recap this session"**. One question, single-select, header `Mood`.
+so the user gets a selectable options list, single-select, header `Mood`.
 
-- If the user picks a mood → do **Mode A** for that mood.
-- If the user picks "Recap this session" → do **Mode B** for the currently active mood.
+Build the options dynamically by listing the folders in `${CLAUDE_PLUGIN_ROOT}/themes/` —
+one option per theme (label = the theme's `display` from its `theme.json`, description = a
+short sample of its voice).
+
+**Hard constraint: `AskUserQuestion` allows at most 4 options.** Handle it like this:
+- **≤4 themes** → show one option per theme. Do NOT add a separate "Recap" option — recap
+  is reachable by typing `recap` in the tool's built-in "Other" field, so don't spend a
+  slot on it (adding a 5th option is an invalid-parameters error).
+- **>4 themes** → show the 4 whose folders sort first alphabetically, and note in the
+  question text that more exist and can be named directly (e.g. `/mood <name>`).
+
+Put a hint in the question text: "…or choose Other and type a mood name, or `recap`."
+
+After the user answers:
+- Picked a theme option, or typed a valid mood name in Other → do **Mode A** for it.
+- Typed `recap` (or similar) in Other → do **Mode B** for the currently active mood.
+- Typed an unknown word → list the available themes and stop.
 
 ## Mode A — switch to a named mood
 
